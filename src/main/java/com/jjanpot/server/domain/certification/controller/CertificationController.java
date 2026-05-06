@@ -17,6 +17,8 @@ import com.jjanpot.server.domain.certification.controller.docs.CertificationCont
 import com.jjanpot.server.domain.certification.dto.request.CreateCertificationRequest;
 import com.jjanpot.server.domain.certification.dto.response.CertificationFeedResponse;
 import com.jjanpot.server.domain.certification.dto.response.CreateCertificationResponse;
+import com.jjanpot.server.domain.certification.dto.response.ToggleLikeResponse;
+import com.jjanpot.server.domain.certification.service.CertificationLikeService;
 import com.jjanpot.server.domain.certification.service.CertificationService;
 import com.jjanpot.server.global.annotation.CurrentUserId;
 import com.jjanpot.server.global.common.dto.SuccessResponse;
@@ -30,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class CertificationController implements CertificationControllerDocs {
 
 	private final CertificationService certificationService;
+	private final CertificationLikeService certificationLikeService;
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public SuccessResponse<CreateCertificationResponse> createCertification(
@@ -68,5 +71,13 @@ public class CertificationController implements CertificationControllerDocs {
 		@PathVariable Long challengeId
 	) {
 		return SuccessResponse.ok(certificationService.getCertificationFeed(userId, challengeId));
+	}
+
+	@PostMapping("/{certificationId}/likes")
+	public SuccessResponse<ToggleLikeResponse> toggleLike(
+		@CurrentUserId Long userId,
+		@PathVariable Long certificationId
+	) {
+		return SuccessResponse.ok(certificationLikeService.toggleLike(userId, certificationId));
 	}
 }

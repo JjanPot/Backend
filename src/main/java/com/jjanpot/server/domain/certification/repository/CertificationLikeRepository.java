@@ -14,6 +14,12 @@ public interface CertificationLikeRepository extends JpaRepository<Certification
 	/** 인증별 활성 좋아요 수 조회 (피드 조회 시 활용) */
 	int countByCertificationAndDeletedAtIsNull(Certification certification);
 
+	/** 특정 유저의 특정 인증 좋아요 조회 (토글용) */
+	java.util.Optional<CertificationLike> findByCertificationAndUser(Certification certification, User user);
+
+	/** 특정 유저가 특정 인증에 활성 좋아요를 눌렀는지 확인 */
+	boolean existsByCertificationAndUserAndDeletedAtIsNull(Certification certification, User user);
+
 	/** 인증 삭제 시 연관 좋아요 일괄 삭제 */
 	void deleteByCertification(Certification certification);
 

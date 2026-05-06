@@ -144,7 +144,9 @@ public class CertificationService {
 			.map(cert -> CertificationFeedResponse.from(
 				cert,
 				certificationLikeRepository.countByCertificationAndDeletedAtIsNull(cert),
-				userId
+				userId,
+				certificationLikeRepository.existsByCertificationAndUserAndDeletedAtIsNull(cert,
+					userRepository.getReferenceById(userId))
 			))
 			.toList();
 	}

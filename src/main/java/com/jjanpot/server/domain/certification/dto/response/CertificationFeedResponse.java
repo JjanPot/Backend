@@ -46,10 +46,14 @@ public record CertificationFeedResponse(
 	int likeCount,
 
 	@Schema(description = "본인 게시글 여부", example = "true")
-	boolean isMe
+	boolean isMe,
+
+	@Schema(description = "현재 유저의 좋아요 여부", example = "false")
+	boolean isLiked
 ) {
 
-	public static CertificationFeedResponse from(Certification cert, int likeCount, Long currentUserId) {
+	public static CertificationFeedResponse from(Certification cert, int likeCount, Long currentUserId,
+		boolean isLiked) {
 		return new CertificationFeedResponse(
 			cert.getCertificationId(),
 			cert.getUser().getUserId(),
@@ -61,7 +65,8 @@ public record CertificationFeedResponse(
 			cert.getImageUrl(),
 			cert.getCreatedAt(),
 			likeCount,
-			cert.getUser().getUserId().equals(currentUserId)
+			cert.getUser().getUserId().equals(currentUserId),
+			isLiked
 		);
 	}
 }
