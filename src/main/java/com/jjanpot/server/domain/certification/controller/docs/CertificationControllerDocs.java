@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.jjanpot.server.domain.certification.dto.request.CreateCertificationRequest;
 import com.jjanpot.server.domain.certification.dto.response.CertificationFeedResponse;
 import com.jjanpot.server.domain.certification.dto.response.CreateCertificationResponse;
+import com.jjanpot.server.domain.certification.dto.response.ToggleLikeResponse;
 import com.jjanpot.server.global.common.dto.SuccessResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -121,5 +122,20 @@ public interface CertificationControllerDocs {
 	SuccessResponse<List<CertificationFeedResponse>> getCertificationFeed(
 		@Parameter(hidden = true) Long userId,
 		@Parameter(description = "챌린지 ID") Long challengeId
+	);
+
+	@Operation(
+		summary = "인증 좋아요 토글",
+		description = """
+			인증 게시글에 좋아요를 토글합니다.
+
+			- 좋아요가 없으면 추가, 있으면 취소합니다.
+			- 본인 게시글에도 좋아요 가능합니다.
+			"""
+	)
+	@ApiResponse(responseCode = "200", description = "좋아요 토글 성공")
+	SuccessResponse<ToggleLikeResponse> toggleLike(
+		@Parameter(hidden = true) Long userId,
+		@Parameter(description = "인증 ID") Long certificationId
 	);
 }
