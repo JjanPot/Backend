@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+
+    <meta property="og:title" content="짠팟에 초대되었어요! 🎉">
+    <meta property="og:description" content="함께 짠팟을 시작해보세요">
+    <meta property="og:image" content="https://jjanpot.shop/images/invite-og.png">
+    <meta property="og:url" content="https://jjanpot.shop/invite">
+    <meta property="og:type" content="website">
+
+    <title>짠팟 초대</title>
+</head>
+<body>
+<script>
+    const code = new URLSearchParams(window.location.search).get("code") || "";
+
+    window.location.href = `jjanpot://invite?code=${encodeURIComponent(code)}`;
+
+    setTimeout(() => {
+        window.location.href = "https://apps.apple.com/app/id6760689952";
+    }, 2000);
+</script>
+
+<noscript>
+    <a href="https://apps.apple.com/app/id6760689952">앱 다운로드</a>
+</noscript>
+</body>
+</html>
