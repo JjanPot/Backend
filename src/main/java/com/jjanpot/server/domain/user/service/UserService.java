@@ -152,15 +152,15 @@ public class UserService {
 			throw new BusinessException(ErrorCode.REQUIRED_AGREEMENT_MISSING);
 		}
 
-		if (userAgreementRepository.existsByUser(user)) {
-			throw new BusinessException(ErrorCode.ALREADY_AGREED_TERMS);
-		}
-
 		// 마케팅 동의 알림 설정 테이블에 저장
 		UserNotificationSetting setting = userNotificationSettingRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 		setting.update(setting.isDailyEnabled(), setting.isWeeklyEnabled(),
 			Boolean.TRUE.equals(request.marketingConsent()));
+
+		if (userAgreementRepository.existsByUser(user)) {
+			return;
+		}
 
 		userAgreementRepository.save(UserAgreement.from(
 			request.ageVerified(),

@@ -47,6 +47,7 @@ public class User extends BaseEntity {
 
 	private String email;
 
+	@Column(length = 1024)
 	private String profileImageUrl;
 
 	@Enumerated(EnumType.STRING)

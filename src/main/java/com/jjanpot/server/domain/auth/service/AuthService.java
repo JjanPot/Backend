@@ -22,6 +22,7 @@ import com.jjanpot.server.domain.user.entity.Provider;
 import com.jjanpot.server.domain.user.entity.User;
 import com.jjanpot.server.domain.user.entity.UserDevice;
 import com.jjanpot.server.domain.user.entity.UserNotificationSetting;
+import com.jjanpot.server.domain.user.repository.UserAgreementRepository;
 import com.jjanpot.server.domain.user.repository.UserDeviceRepository;
 import com.jjanpot.server.domain.user.repository.UserNotificationSettingRepository;
 import com.jjanpot.server.domain.user.repository.UserRepository;
@@ -46,6 +47,7 @@ public class AuthService {
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final AuthProperties authProperties;
 	private final UserDeviceRepository userDeviceRepository;
+	private final UserAgreementRepository userAgreementRepository;
 	private final UserNotificationSettingRepository userNotificationSettingRepository;
 
 	@Transactional
@@ -92,9 +94,7 @@ public class AuthService {
 			// );
 		}
 
-		LoginUserInfo userInfo = LoginUserInfo.from(user);
-		boolean isNewUser = !user.isOnboardingCompleted();
-		return LoginResponse.of(accessToken, refreshToken, userInfo, isNewUser, isReviewAccount(user));
+		return createLoginResponse(user, accessToken, refreshToken);
 	}
 
 	@Transactional
@@ -283,7 +283,21 @@ public class AuthService {
 				() -> createNewToken(user, refreshToken, expiresAt)
 			);
 
-		return LoginResponse.of(accessToken, refreshToken, LoginUserInfo.from(user), !user.isOnboardingCompleted(),
-			isReviewAccount(user));
+		return createLoginResponse(user, accessToken, refreshToken);
+	}
+
+	private LoginResponse createLoginResponse(User user, String accessToken, String refreshToken) {
+		boolean termsAgreed = userAgreementRepository.existsByUser(user);
+		boolean onboardingCompleted = user.isOnboardingCompleted();
+
+		return LoginResponse.of(
+			accessToken,
+			refreshToken,
+			LoginUserInfo.from(user),
+			!onboardingCompleted,
+			termsAgreed,
+			onboardingCompleted,
+			isReviewAccount(user)
+		);
 	}
 }
