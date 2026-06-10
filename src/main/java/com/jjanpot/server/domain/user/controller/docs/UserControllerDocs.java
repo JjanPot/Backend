@@ -24,7 +24,7 @@ public interface UserControllerDocs {
 			
 			- `ageVerified`, `termsOfServiceAgreed`, `privacyPolicyAgreed`는 모두 `true` 필수
 			- `marketingConsent`는 선택이며, 미입력 시 `false`로 처리
-			- 이미 약관 동의를 완료한 사용자는 중복 요청 시 400 에러
+			- 이미 약관 동의를 완료한 사용자의 중복 요청은 성공으로 처리
 			"""
 	)
 	@ApiResponse(responseCode = "200", description = "약관 동의 성공")
@@ -40,7 +40,12 @@ public interface UserControllerDocs {
 			
 			- `nickname` (필수): 최대 10자
 			- `birthDate` (선택): yyyy-MM-dd 형식 (예: 2000-01-15), 미입력 시 null
-			- `profileImageUrl` (선택): Presigned URL로 업로드한 이미지 URL, 미입력 시 기본 이미지
+			- `profileImageUrl` (선택): Presigned URL 응답의 `imageUrl`, 미입력 시 기본 이미지
+
+			## 프로필 이미지 등록 흐름
+			1. `GET /api/images/v1/presigned-url?directory=profile/&contentType=image/jpeg`로 업로드 URL 발급
+			2. 응답의 `uploadUrl`로 S3에 PUT 업로드
+			3. 응답의 `imageUrl`을 이 API의 `profileImageUrl`에 담아 전송
 			"""
 	)
 	@ApiResponse(responseCode = "200", description = "프로필 생성 성공")
