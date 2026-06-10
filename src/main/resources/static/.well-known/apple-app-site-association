@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["4XPB5Y5D44.swpy5team.jjanpot"],
+        "components": [
+          { "/": "/invite*" }
+        ]
+      }
+    ]
+  }
+}

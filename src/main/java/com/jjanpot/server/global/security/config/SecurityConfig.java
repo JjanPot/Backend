@@ -43,6 +43,10 @@ public class SecurityConfig {
 				"/v3/api-docs/**",
 				"/v3/api-docs.yaml",
 				"/dev-login.html",
+				"/.well-known/**",
+				"/invite",
+				"/invite.html",
+				"/images/**",
 				"/api/notification/v99/test/**"
 			)
 			.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
