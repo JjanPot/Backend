@@ -15,7 +15,7 @@ public record ProfileUpdateRequest(
 	@Schema(description = "생년월일 (미입력 시 기존 값 유지)", example = "2000-01-15", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
 	LocalDate birthDate,
 
-	@Schema(description = "프로필 이미지 URL (Presigned URL로 업로드 후 전달, null이면 기존 값 유지, 빈 문자열은 허용하지 않음)", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
+	@Schema(description = "프로필 이미지 URL (Presigned URL 응답의 imageUrl 전달, null이면 기존 값 유지, 빈 문자열은 허용하지 않음)", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
 	String profileImageUrl
 ) {
 }
