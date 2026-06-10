@@ -41,6 +41,9 @@ public interface AuthControllerV1Docs {
 			| `user.userId` | 유저 고유 ID |
 			| `user.nickname` | 유저 닉네임 |
 			| `newUser` | `true`이면 온보딩 미완료 → 온보딩 화면으로 이동 |
+			| `termsAgreed` | 약관 동의 완료 여부 |
+			| `onboardingCompleted` | 온보딩 완료 여부 |
+			| `nextOnboardingStep` | 다음 온보딩 단계 (`AGREEMENT`, `PROFILE`, `COMPLETED`) |
 			| `reviewMode` | `true`이면 앱 심사 계정 → 심사용 버튼 노출 |
 
 			---
