@@ -65,7 +65,9 @@
 
     <springProfile name="prod">
         <logger level="INFO" name="org.springframework"/>
-        <logger level="WARN" name="org.hibernate.SQL"/>
+        <logger level="OFF" name="org.hibernate.SQL"/>
+        <logger level="OFF" name="org.hibernate.orm.jdbc.bind"/>
+        <logger level="OFF" name="org.hibernate.type.descriptor.sql.BasicBinder"/>
         <root level="INFO">
             <appender-ref ref="ASYNC_SERVER_CONSOLE"/>
             <appender-ref ref="ROLLING_FILE"/>
