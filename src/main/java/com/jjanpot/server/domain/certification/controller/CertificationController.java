@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,10 +50,10 @@ public class CertificationController implements CertificationControllerDocs {
 		@PathVariable Long certificationId,
 		@Valid @RequestPart("request") CreateCertificationRequest request,
 		@RequestPart(value = "image", required = false) MultipartFile image,
-		@RequestPart(value = "deleteImage", required = false) Boolean deleteImage
+		@RequestParam(value = "deleteImage", required = false, defaultValue = "false") boolean deleteImage
 	) {
 		return SuccessResponse.ok(
-			certificationService.updateCertification(userId, certificationId, request, image, Boolean.TRUE.equals(deleteImage))
+			certificationService.updateCertification(userId, certificationId, request, image, deleteImage)
 		);
 	}
 
