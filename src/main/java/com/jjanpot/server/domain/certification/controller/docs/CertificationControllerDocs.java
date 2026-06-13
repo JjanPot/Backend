@@ -66,7 +66,7 @@ public interface CertificationControllerDocs {
 			인증 생성과 동일한 multipart/form-data 형식입니다.
 			- `request` (필수): JSON 문자열, Content-Type을 `application/json`으로 설정
 			- `image` (선택): 새 이미지 파일 (JPEG, PNG, WEBP / 최대 10MB)
-			- `deleteImage` (선택): 기존 이미지만 삭제하려면 `true`
+			- `deleteImage` (선택): 일반 form field로 `true` 문자열 전송 시 기존 이미지 삭제
 
 			## 이미지 처리
 			- 새 이미지 첨부 시: 새 이미지 업로드 → 기존 S3 이미지는 커밋 후 삭제
@@ -85,7 +85,7 @@ public interface CertificationControllerDocs {
 		@Parameter(description = "인증 ID") Long certificationId,
 		CreateCertificationRequest request,
 		@Parameter(description = "새 인증 이미지 (선택, 최대 10MB, JPEG/PNG/WEBP)") MultipartFile image,
-		@Parameter(description = "기존 이미지만 삭제하려면 true") Boolean deleteImage
+		@Parameter(description = "기존 이미지만 삭제하려면 true") boolean deleteImage
 	);
 
 	@Operation(
