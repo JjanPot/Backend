@@ -24,4 +24,6 @@ public interface NotificationTemplateRepository
 		@Param("type") NotificationTemplateType type,
 		@Param("subType") NotificationSubTemplateType subType
 	);
+
+	List<NotificationTemplate> findByType(NotificationTemplateType type);
 }

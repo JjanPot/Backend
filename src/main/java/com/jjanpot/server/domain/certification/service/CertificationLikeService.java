@@ -1,5 +1,6 @@
 package com.jjanpot.server.domain.certification.service;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +9,7 @@ import com.jjanpot.server.domain.certification.entity.Certification;
 import com.jjanpot.server.domain.certification.entity.CertificationLike;
 import com.jjanpot.server.domain.certification.repository.CertificationLikeRepository;
 import com.jjanpot.server.domain.certification.repository.CertificationRepository;
+import com.jjanpot.server.domain.notification.event.CertificationLikedNotificationEvent;
 import com.jjanpot.server.domain.user.entity.User;
 import com.jjanpot.server.domain.user.repository.UserRepository;
 import com.jjanpot.server.global.exception.BusinessException;
@@ -23,6 +25,7 @@ public class CertificationLikeService {
     private final CertificationLikeRepository certificationLikeRepository;
     private final CertificationRepository certificationRepository;
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 좋아요 토글
@@ -56,10 +59,26 @@ public class CertificationLikeService {
                         .user(user)
                         .build()
                 );
+                publishLikeNotificationEvent(user, certification);
                 return true;
             });
 
         int likeCount = certificationLikeRepository.countByCertificationAndDeletedAtIsNull(certification);
         return new ToggleLikeResponse(isLiked, likeCount);
+    }
+
+    private void publishLikeNotificationEvent(User actor, Certification certification) {
+        User owner = certification.getUser();
+        if (actor.getUserId().equals(owner.getUserId())) {
+            return;
+        }
+
+        eventPublisher.publishEvent(new CertificationLikedNotificationEvent(
+            certification.getCertificationId(),
+            certification.getChallenge().getChallengeId(),
+            actor.getUserId(),
+            owner.getUserId(),
+            actor.getNickname()
+        ));
     }
 }

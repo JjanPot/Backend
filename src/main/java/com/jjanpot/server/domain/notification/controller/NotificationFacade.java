@@ -61,19 +61,39 @@ public interface NotificationFacade {
 			■ FCM Payload 구조
 			[Data]
 			- type: 알림 타입
-			- relateId: 연관 리소스 ID (nullable)
+			- relateId: 연관 리소스 ID (nullable, 기존 호환 필드)
+			- challengeId: 챌린지 ID (소셜 알림)
+			- certificationId: 인증 게시물 ID (소셜 알림)
+			- deepLink: 앱 이동용 딥링크 (소셜 알림)
+			- utm_source: push_notification (소셜 알림)
+			- utm_campaign: social_interaction (소셜 알림)
 			
 			■ type 값 목록
 			- ENCOURAGE: 인증 독려
+			- CERTIFICATION_CREATED: 팀원 신규 인증 알림
 			- LIKE: 좋아요 알림
 			- GOAL_COMPLETE: 목표 달성
 			
 			■ relateId 정책
 			- type에 따라 값이 다름
 			  - ENCOURAGE : 챌린지 ID
-			  - LIKE : 인증 ID (미정)
+			  - CERTIFICATION_CREATED : 인증 ID
+			  - LIKE : 인증 ID
 			  - GOAL_COMPLETE : 미정
 			- null 값이 내려올 수 있기 때문에 앱에서 null 체크 후 처리 필요
+
+			■ 소셜 알림 Payload 예시
+			```json
+			{
+			  "type": "CERTIFICATION_CREATED",
+			  "relateId": "282",
+			  "challengeId": "1",
+			  "certificationId": "282",
+			  "deepLink": "jjanpot://certifications/282?utm_source=push_notification&utm_campaign=social_interaction",
+			  "utm_source": "push_notification",
+			  "utm_campaign": "social_interaction"
+			}
+			```
 			"""
 	)
 	void dailyPushNotification();
@@ -90,19 +110,39 @@ public interface NotificationFacade {
 			■ FCM Payload 구조
 			[Data]
 			- type: 알림 타입
-			- relateId: 연관 리소스 ID (nullable)
+			- relateId: 연관 리소스 ID (nullable, 기존 호환 필드)
+			- challengeId: 챌린지 ID (소셜 알림)
+			- certificationId: 인증 게시물 ID (소셜 알림)
+			- deepLink: 앱 이동용 딥링크 (소셜 알림)
+			- utm_source: push_notification (소셜 알림)
+			- utm_campaign: social_interaction (소셜 알림)
 			
 			■ type 값 목록
 			- ENCOURAGE: 인증 독려
+			- CERTIFICATION_CREATED: 팀원 신규 인증 알림
 			- LIKE: 좋아요 알림
 			- GOAL_COMPLETE: 목표 달성
 			
 			■ relateId 정책
 			- type에 따라 값이 다름
 			  - ENCOURAGE : 챌린지 ID
-			  - LIKE : 인증 ID (미정)
+			  - CERTIFICATION_CREATED : 인증 ID
+			  - LIKE : 인증 ID
 			  - GOAL_COMPLETE : 미정
 			- null 값이 내려올 수 있기 때문에 앱에서 null 체크 후 처리 필요
+
+			■ 소셜 알림 Payload 예시
+			```json
+			{
+			  "type": "LIKE",
+			  "relateId": "282",
+			  "challengeId": "1",
+			  "certificationId": "282",
+			  "deepLink": "jjanpot://certifications/282?utm_source=push_notification&utm_campaign=social_interaction",
+			  "utm_source": "push_notification",
+			  "utm_campaign": "social_interaction"
+			}
+			```
 			"""
 	)
 	void weeklyPushNotification();

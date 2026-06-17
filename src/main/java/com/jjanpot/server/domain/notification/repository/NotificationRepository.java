@@ -89,6 +89,47 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 		@Param("ongoing") ChallengeStatus ongoing
 	);
 
+	@Query("""
+			SELECT new com.jjanpot.server.domain.notification.dto.UserFcmDto(
+				u.userId,
+				ud.fcmToken,
+				c.challengeId
+			)
+			FROM UserDevice ud
+			JOIN ud.user u
+			JOIN UserNotificationSetting uns
+				ON uns.user = u AND uns.socialEnabled = true
+			JOIN TeamMembers tm
+				ON tm.user = u
+			JOIN Challenge c
+				ON c.team = tm.team
+			WHERE c.challengeId = :challengeId
+				AND u.userId <> :authorUserId
+				AND ud.isActive = true
+		""")
+	List<UserFcmDto> findSocialTargetsByChallengeExceptAuthor(
+		@Param("challengeId") Long challengeId,
+		@Param("authorUserId") Long authorUserId
+	);
+
+	@Query("""
+			SELECT new com.jjanpot.server.domain.notification.dto.UserFcmDto(
+				u.userId,
+				ud.fcmToken,
+				:challengeId
+			)
+			FROM UserDevice ud
+			JOIN ud.user u
+			JOIN UserNotificationSetting uns
+				ON uns.user = u AND uns.socialEnabled = true
+			WHERE u.userId = :ownerUserId
+				AND ud.isActive = true
+		""")
+	List<UserFcmDto> findSocialTargetsByUser(
+		@Param("ownerUserId") Long ownerUserId,
+		@Param("challengeId") Long challengeId
+	);
+
 	@Modifying
 	@Query("DELETE FROM Notification n WHERE n.userId = :userId")
 	void deleteAllByUserId(@Param("userId") Long userId);
