@@ -48,6 +48,12 @@ public interface CertificationControllerDocs {
 			- 챌린지에 설정된 카테고리만 선택 가능
 			- 지출(SPEND): spentAmount 필수, 절약 금액 = 기준 금액 - 소비 금액 (음수 가능)
 			- 무지출(NO_SPEND): spentAmount 불필요, 절약 금액 = 기준 금액 전액
+
+			## 푸시 알림
+			- 인증 생성 성공 후 같은 챌린지 팀원에게 `CERTIFICATION_CREATED` 푸시 알림이 발송됩니다.
+			- 작성자는 알림 대상에서 제외됩니다.
+			- `socialEnabled=false`이거나 활성 FCM 토큰이 없는 유저는 발송 대상에서 제외됩니다.
+			- 푸시 data payload에는 `certificationId`, `challengeId`, `deepLink`, `utm_source`, `utm_campaign`이 포함됩니다.
 			"""
 	)
 	@ApiResponse(responseCode = "201", description = "인증 생성 성공")
@@ -131,6 +137,14 @@ public interface CertificationControllerDocs {
 
 			- 좋아요가 없으면 추가, 있으면 취소합니다.
 			- 본인 게시글에도 좋아요 가능합니다.
+
+			## 푸시 알림
+			- 다른 유저가 내 인증 게시물에 최초로 좋아요를 누르면 `LIKE` 푸시 알림이 발송됩니다.
+			- 좋아요 취소 시에는 알림이 발송되지 않습니다.
+			- 좋아요 취소 후 재클릭으로 기존 좋아요가 복구되는 경우에도 중복 알림 방지를 위해 알림이 발송되지 않습니다.
+			- 본인 게시글에 본인이 좋아요를 누른 경우 알림이 발송되지 않습니다.
+			- `socialEnabled=false`이거나 활성 FCM 토큰이 없는 유저는 발송 대상에서 제외됩니다.
+			- 푸시 data payload에는 `certificationId`, `challengeId`, `deepLink`, `utm_source`, `utm_campaign`이 포함됩니다.
 			"""
 	)
 	@ApiResponse(responseCode = "200", description = "좋아요 토글 성공")

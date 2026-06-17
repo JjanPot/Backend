@@ -81,6 +81,19 @@ public interface NotificationFacade {
 			  - LIKE : 인증 ID
 			  - GOAL_COMPLETE : 미정
 			- null 값이 내려올 수 있기 때문에 앱에서 null 체크 후 처리 필요
+
+			■ 소셜 알림 Payload 예시
+			```json
+			{
+			  "type": "CERTIFICATION_CREATED",
+			  "relateId": "282",
+			  "challengeId": "1",
+			  "certificationId": "282",
+			  "deepLink": "jjanpot://certifications/282?utm_source=push_notification&utm_campaign=social_interaction",
+			  "utm_source": "push_notification",
+			  "utm_campaign": "social_interaction"
+			}
+			```
 			"""
 	)
 	void dailyPushNotification();
@@ -117,6 +130,19 @@ public interface NotificationFacade {
 			  - LIKE : 인증 ID
 			  - GOAL_COMPLETE : 미정
 			- null 값이 내려올 수 있기 때문에 앱에서 null 체크 후 처리 필요
+
+			■ 소셜 알림 Payload 예시
+			```json
+			{
+			  "type": "LIKE",
+			  "relateId": "282",
+			  "challengeId": "1",
+			  "certificationId": "282",
+			  "deepLink": "jjanpot://certifications/282?utm_source=push_notification&utm_campaign=social_interaction",
+			  "utm_source": "push_notification",
+			  "utm_campaign": "social_interaction"
+			}
+			```
 			"""
 	)
 	void weeklyPushNotification();
