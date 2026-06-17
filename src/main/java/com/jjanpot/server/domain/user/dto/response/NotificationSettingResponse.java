@@ -13,6 +13,9 @@ public record NotificationSettingResponse(
 	@Schema(description = "주간 미인증 알림 활성화 여부", example = "true", requiredMode = Schema.RequiredMode.REQUIRED)
 	boolean weeklyEnabled,
 
+	@Schema(description = "팀원 인증/좋아요 소셜 알림 활성화 여부", example = "true", requiredMode = Schema.RequiredMode.REQUIRED)
+	boolean socialEnabled,
+
 	@Schema(description = "마케팅 수신 동의 여부", example = "false", requiredMode = Schema.RequiredMode.REQUIRED)
 	boolean marketingConsent
 ) {
@@ -20,6 +23,7 @@ public record NotificationSettingResponse(
 		return new NotificationSettingResponse(
 			setting.isDailyEnabled(),
 			setting.isWeeklyEnabled(),
+			setting.isSocialEnabled(),
 			setting.isMarketingConsentEnabled()
 		);
 	}

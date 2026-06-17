@@ -155,7 +155,7 @@ public class UserService {
 		// 마케팅 동의 알림 설정 테이블에 저장
 		UserNotificationSetting setting = userNotificationSettingRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
-		setting.update(setting.isDailyEnabled(), setting.isWeeklyEnabled(),
+		setting.update(setting.isDailyEnabled(), setting.isWeeklyEnabled(), setting.isSocialEnabled(),
 			Boolean.TRUE.equals(request.marketingConsent()));
 
 		if (userAgreementRepository.existsByUser(user)) {
@@ -246,6 +246,7 @@ public class UserService {
 	public void updateNotification(Long userId, NotificationSettingUpdateRequest request) {
 		UserNotificationSetting setting = userNotificationSettingRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
-		setting.update(request.dailyEnabled(), request.weeklyEnabled(), request.marketingConsent());
+		boolean socialEnabled = request.socialEnabled() != null ? request.socialEnabled() : setting.isSocialEnabled();
+		setting.update(request.dailyEnabled(), request.weeklyEnabled(), socialEnabled, request.marketingConsent());
 	}
 }

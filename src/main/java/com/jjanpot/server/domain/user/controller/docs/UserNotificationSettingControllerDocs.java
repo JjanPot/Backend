@@ -14,11 +14,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @SecurityRequirement(name = "JWT TOKEN")
 public interface UserNotificationSettingControllerDocs {
 
-	@Operation(summary = "알림 설정 조회", description = "1일 1회 미인증 알림, 주간 미인증 알림, 마케팅 수신 동의 여부를 조회합니다.")
+	@Operation(summary = "알림 설정 조회", description = "1일 1회 미인증 알림, 주간 미인증 알림, 소셜 알림, 마케팅 수신 동의 여부를 조회합니다.")
 	@ApiResponse(responseCode = "200", description = "알림 설정 조회 성공")
 	SuccessResponse<NotificationSettingResponse> getNotification(@Parameter(hidden = true) Long userId);
 
-	@Operation(summary = "알림 설정 수정", description = "1일 1회 미인증 알림, 주간 미인증 알림, 마케팅 수신 동의 여부를 수정합니다.")
+	@Operation(summary = "알림 설정 수정", description = "1일 1회 미인증 알림, 주간 미인증 알림, 소셜 알림, 마케팅 수신 동의 여부를 수정합니다. socialEnabled 미입력 시 기존 값을 유지합니다.")
 	@ApiResponse(responseCode = "200", description = "알림 설정 수정 성공")
 	SuccessResponse<Void> updateNotification(
 		NotificationSettingUpdateRequest request,
