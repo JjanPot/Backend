@@ -35,6 +35,9 @@ public class UserNotificationSetting extends BaseEntity {
     @Column(name = "weekly_enabled", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean weeklyEnabled = true;
 
+    @Column(name = "social_enabled", nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean socialEnabled = true;
+
     @Column(name = "marketing_consent_enabled", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean marketingConsentEnabled = false;
 
@@ -43,13 +46,15 @@ public class UserNotificationSetting extends BaseEntity {
         setting.user = user;
         setting.dailyEnabled = true;
         setting.weeklyEnabled = true;
+        setting.socialEnabled = true;
         setting.marketingConsentEnabled = false;
         return setting;
     }
 
-    public void update(boolean dailyEnabled, boolean weeklyEnabled, boolean marketingConsentEnabled) {
+    public void update(boolean dailyEnabled, boolean weeklyEnabled, boolean socialEnabled, boolean marketingConsentEnabled) {
         this.dailyEnabled = dailyEnabled;
         this.weeklyEnabled = weeklyEnabled;
+        this.socialEnabled = socialEnabled;
         this.marketingConsentEnabled = marketingConsentEnabled;
     }
 }

@@ -1,8 +1,6 @@
 package com.jjanpot.server.domain.notification.entity;
 
 import com.jjanpot.server.domain.notification_template.entity.NotificationTemplate;
-import com.jjanpot.server.domain.notification_template.entity.NotificationTemplateType;
-import com.jjanpot.server.domain.user.entity.User;
 import com.jjanpot.server.global.entity.BaseEntity;
 import com.jjanpot.server.global.util.CodeEnum;
 
@@ -73,17 +71,28 @@ public class Notification extends BaseEntity {
 	private String failReason;
 
 	public static Notification create(Long userId, String fcmToken, NotificationTemplate template, Long relatedId) {
+		return create(userId, fcmToken, template, relatedId, template.getTitle(), template.getBody());
+	}
+
+	public static Notification create(
+		Long userId,
+		String fcmToken,
+		NotificationTemplate template,
+		Long relatedId,
+		String title,
+		String body
+	) {
 		return Notification.builder()
 			.userId(userId)
 			.targetToken(fcmToken)
 			.notificationTemplate(template)
-			.title(template.getTitle())
-			.body(template.getBody())
+			.title(title)
+			.body(body)
 			.status(NotificationStatus.PENDING)
 			.relatedId(relatedId)
 			.isRead(false)
 			.build();
-	}
+	} // 템플릿은 유지하되, 발송 시점에 가공한 title/body도 저장 가능
 
 	public void markAsRead() {
 		this.isRead = true;
