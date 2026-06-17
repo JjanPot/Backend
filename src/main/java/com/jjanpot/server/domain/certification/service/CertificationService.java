@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ import com.jjanpot.server.domain.challenge.entity.ChallengeWeek;
 import com.jjanpot.server.domain.challenge.repository.ChallengeCategoryRepository;
 import com.jjanpot.server.domain.challenge.repository.ChallengeRepository;
 import com.jjanpot.server.domain.challenge.repository.ChallengeWeekRepository;
+import com.jjanpot.server.domain.notification.event.CertificationCreatedNotificationEvent;
 import com.jjanpot.server.domain.team.repository.TeamMembersRepository;
 import com.jjanpot.server.domain.user.entity.User;
 import com.jjanpot.server.domain.user.repository.UserRepository;
@@ -52,6 +54,7 @@ public class CertificationService {
 	private final CertificationRepository certificationRepository;
 	private final CertificationLikeRepository certificationLikeRepository;
 	private final ImageUploadService imageUploadService;
+	private final ApplicationEventPublisher eventPublisher;
 
 	/** 인증 생성 **/
 	@Transactional
@@ -126,6 +129,13 @@ public class CertificationService {
 
 		log.info("[인증 생성] userId={}, challengeId={}, spendType={}, savedAmount={}",
 			userId, request.challengeId(), request.spendType(), savedAmount);
+
+		eventPublisher.publishEvent(new CertificationCreatedNotificationEvent(
+			certification.getCertificationId(),
+			challenge.getChallengeId(),
+			user.getUserId(),
+			user.getNickname()
+		));
 
 		return CreateCertificationResponse.from(certification);
 	}
