@@ -31,11 +31,16 @@ public interface MyPageControllerDocs {
 			- `nickname`: 최대 10자, 미입력 시 기존 값 유지
 			- `birthDate`: yyyy-MM-dd 형식, 미입력 시 기존 값 유지
 			- `profileImageUrl`: Presigned URL로 업로드한 이미지 URL, 미입력/null 시 기존 값 유지, 빈 문자열은 허용하지 않음
+			- `resetProfileImage`: `true`이면 프로필 이미지를 기본 이미지로 변경
 
 			## 프로필 이미지 수정 흐름
 			1. `GET /api/images/v1/presigned-url?directory=profile/&contentType=image/jpeg`로 업로드 URL 발급
 			2. 응답의 `uploadUrl`로 S3에 PUT 업로드
 			3. 응답의 `imageUrl`을 이 API의 `profileImageUrl`에 담아 전송
+
+			## 프로필 이미지 삭제 흐름
+			- `resetProfileImage=true`로 요청하면 서버가 기본 프로필 이미지 URL로 변경합니다.
+			- `resetProfileImage=true`와 `profileImageUrl`이 함께 오면 기본 이미지 변경이 우선 적용됩니다.
 			"""
 	)
 	@ApiResponse(responseCode = "200", description = "프로필 수정 성공")

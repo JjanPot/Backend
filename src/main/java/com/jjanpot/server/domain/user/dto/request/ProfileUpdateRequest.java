@@ -16,6 +16,9 @@ public record ProfileUpdateRequest(
 	LocalDate birthDate,
 
 	@Schema(description = "프로필 이미지 URL (Presigned URL 응답의 imageUrl 전달, null이면 기존 값 유지, 빈 문자열은 허용하지 않음)", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
-	String profileImageUrl
+	String profileImageUrl,
+
+	@Schema(description = "true이면 프로필 이미지를 기본 이미지로 변경", example = "false", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
+	Boolean resetProfileImage
 ) {
 }
