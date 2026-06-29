@@ -97,7 +97,7 @@ public class UserService {
 		User user = getUserByUserId(userId);
 
 		String nickname = resolveProfileNickname(user, request.nickname());
-		String imageUrl = resolveProfileImageUrl(user, request.profileImageUrl());
+		String imageUrl = resolveProfileImageUrl(user, request.profileImageUrl(), request.resetProfileImage());
 		LocalDate birthDate = request.birthDate() != null ? request.birthDate() : user.getBirthDate();
 
 		user.updateProfile(
@@ -219,7 +219,10 @@ public class UserService {
 		return nickname;
 	}
 
-	private String resolveProfileImageUrl(User user, String profileImageUrl) {
+	private String resolveProfileImageUrl(User user, String profileImageUrl, Boolean resetProfileImage) {
+		if (Boolean.TRUE.equals(resetProfileImage)) {
+			return DEFAULT_PROFILE_IMAGE;
+		}
 		if (profileImageUrl == null) {
 			return user.getProfileImageUrl();
 		}
