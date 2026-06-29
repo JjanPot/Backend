@@ -1,7 +1,10 @@
 package com.jjanpot.server.domain.notification.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.jjanpot.server.domain.notification.dto.response.NotificationResponse;
 import com.jjanpot.server.global.common.dto.ErrorResponse;
 import com.jjanpot.server.global.common.dto.SuccessResponse;
 
@@ -17,6 +20,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Notification", description = "알림 관련 API")
 @SecurityRequirement(name = "bearerAuth")
 public interface NotificationFacade {
+	@Operation(
+		summary = "알림함 조회",
+		description = "현재 사용자가 수신한 알림을 최신순으로 조회합니다. 발송에 성공한 알림만 반환합니다."
+	)
+	@ApiResponse(
+		responseCode = "200",
+		description = "알림함 조회 성공",
+		content = @Content(schema = @Schema(implementation = NotificationResponse.class))
+	)
+	SuccessResponse<List<NotificationResponse>> getNotifications(
+		@Parameter(hidden = true) Long userId
+	);
+
 	@Operation(
 		summary = "알림 읽음 처리",
 		description = "사용자가 특정 알림을 확인했을 때 읽음 상태로 변경합니다."
