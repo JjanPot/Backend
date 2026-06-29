@@ -15,6 +15,16 @@ import com.jjanpot.server.domain.notification.entity.Notification;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long>, NotificationRepositoryCustom {
 
+	@Query("""
+			SELECT n
+			FROM Notification n
+			JOIN FETCH n.notificationTemplate
+			WHERE n.userId = :userId
+				AND n.status = com.jjanpot.server.domain.notification.entity.Notification.NotificationStatus.SENT
+			ORDER BY n.createdAt DESC, n.notificationId DESC
+		""")
+	List<Notification> findInboxByUserId(@Param("userId") Long userId);
+
 	// TODO 고도화 작업시 유저 설정에 알람 동의한 유저만 조회하게 WHERE 조건에 추가 필요.
 	@Query("""
 			SELECT
