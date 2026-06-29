@@ -20,6 +20,7 @@ import com.jjanpot.server.domain.challenge.entity.ChallengeStatus;
 import com.jjanpot.server.domain.notification.dto.FcmSendCommand;
 import com.jjanpot.server.domain.notification.dto.UserChallengeReminderDto;
 import com.jjanpot.server.domain.notification.dto.UserFcmDto;
+import com.jjanpot.server.domain.notification.dto.response.NotificationResponse;
 import com.jjanpot.server.domain.notification.entity.Notification;
 import com.jjanpot.server.domain.notification.repository.NotificationRepository;
 import com.jjanpot.server.domain.notification_template.entity.NotificationSubTemplateType;
@@ -46,6 +47,18 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Value("${custom.fcm.partition-size:500}")
 	private int partitionSize;
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<NotificationResponse> getNotifications(Long userId) {
+		if (!userRepository.existsById(userId)) {
+			throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+		}
+
+		return notificationRepository.findInboxByUserId(userId).stream()
+			.map(NotificationResponse::from)
+			.toList();
+	}
 
 	@Override
 	public void sendDailyReminder() {
