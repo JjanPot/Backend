@@ -63,7 +63,10 @@ public class CertificationService {
 	@Transactional
 	public CreateCertificationResponse createCertification(Long userId, CreateCertificationRequest request,
 		MultipartFile image) {
-		User user = findUser(userId);
+		// 비관적 락으로 동일 사용자 동시 인증 직렬화 (일일 인증 횟수 검증 우회 방지)
+		// 첫 쿼리여야 함: MySQL REPEATABLE READ는 첫 일반 조회 시점에 스냅샷이 고정되므로, 락 획득 후 스냅샷이 생겨야 COUNT가 최신 건수를 봄
+		User user = userRepository.findByIdForUpdate(userId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 		Challenge challenge = findChallenge(request.challengeId());
 
 		// 팀원 검증
