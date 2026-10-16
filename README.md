@@ -11,7 +11,7 @@
 
 > 회원가입 → 챌린지 생성 → 초대코드 입력 → 절약 인증 → 결과 리포트까지의 전체 흐름 (약 1분)
 
-<!-- TODO: jjanpot-demo-compressed.mp4를 GitHub 에디터에 드래그해서 생성된 https://github.com/user-attachments/assets/... 링크를 이 자리에 한 줄로 붙여넣기 -->
+https://github.com/user-attachments/assets/19f5a6a2-7830-49c2-a78b-376fa487a82d
 
 ## 📱 Screens
 
