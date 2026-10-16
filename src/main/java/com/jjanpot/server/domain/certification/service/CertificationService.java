@@ -3,7 +3,10 @@ package com.jjanpot.server.domain.certification.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -149,14 +152,33 @@ public class CertificationService {
 		teamMembersRepository.findByTeamAndUser(challenge.getTeam(), user)
 			.orElseThrow(() -> new BusinessException(ErrorCode.FORBIDDEN));
 
-		return certificationRepository.findFeedExcludingBlocked(challenge, userId)
+		List<Certification> certifications = certificationRepository.findFeedExcludingBlocked(challenge, userId);
+		List<Long> certificationIds = certifications.stream()
+			.map(Certification::getCertificationId)
+			.toList();
+		if (certificationIds.isEmpty()) {
+			return List.of();
+		}
+
+		Map<Long, Integer> likeCountByCertificationId = certificationLikeRepository
+			.countActiveLikesByCertificationIds(certificationIds)
+			.stream()
+			.collect(Collectors.toMap(
+				row -> (Long)row[0],
+				row -> ((Number)row[1]).intValue()
+			));
+		Set<Long> likedCertificationIds = certificationLikeRepository
+			.findLikedCertificationIdsByUserId(certificationIds, userId)
+			.stream()
+			.collect(Collectors.toSet());
+
+		return certifications
 			.stream()
 			.map(cert -> CertificationFeedResponse.from(
 				cert,
-				certificationLikeRepository.countByCertificationAndDeletedAtIsNull(cert),
+				likeCountByCertificationId.getOrDefault(cert.getCertificationId(), 0),
 				userId,
-				certificationLikeRepository.existsByCertificationAndUserAndDeletedAtIsNull(cert,
-					userRepository.getReferenceById(userId))
+				likedCertificationIds.contains(cert.getCertificationId())
 			))
 			.toList();
 	}
