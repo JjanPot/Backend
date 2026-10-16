@@ -31,6 +31,8 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
 
 	/** 챌린지 전체 인증 피드 조회 (최신순, 차단 사용자 제외, 신고 비노출 제외) */
 	@Query("SELECT c FROM Certification c "
+		+ "JOIN FETCH c.user "
+		+ "JOIN FETCH c.category "
 		+ "WHERE c.challenge = :challenge "
 		+ "AND c.isHidden = false "
 		+ "AND NOT EXISTS ("

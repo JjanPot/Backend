@@ -13,10 +13,12 @@ import com.jjanpot.server.global.infra.storage.FileUploader.PresignedUrlResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @Tag(name = "Image", description = "이미지 업로드 API")
+@SecurityRequirement(name = "JWT TOKEN")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/images/v1")
@@ -31,6 +33,7 @@ public class ImageController {
 
 			- `directory`: 업로드 경로 (profile/, certification/)
 			- `contentType`: 이미지 타입 (image/jpeg, image/png, image/webp)
+			- JWT 인증 필요: `Authorization: Bearer {accessToken}` 헤더를 포함해야 합니다.
 
 			응답의 `uploadUrl`로 PUT 요청하여 이미지를 직접 업로드하고,
 			`imageUrl`을 프로필 등록 등의 API에 전달하면 됩니다.
